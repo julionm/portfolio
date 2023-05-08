@@ -16,21 +16,17 @@
 .wrapper {
     --scrollQtd: 0;
 
-    height: 225px;
-    width: 300px;
     overflow-x: hidden;
 }
 
-.images-list {
+.items-list {
     display: flex;
     flex-direction: row;
     transform: translate(var(--scrollQtd), 0);
     transition: transform 0.35s cubic-bezier(0.15, 0.3, 0.25, 1) 0s;
 }
 
-.images {
-    height: 225px;
-    width: 300px;
+.item {
     flex-shrink: 0;
 }
 

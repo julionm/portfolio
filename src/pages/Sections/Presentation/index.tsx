@@ -1,4 +1,4 @@
-import { Gallery } from '../Gallery';
+import { Gallery } from '../../../components/Gallery';
 import './styles.scss';
 
 export function Presentation() {
@@ -14,7 +14,7 @@ export function Presentation() {
                 </article>
         
                 <div className="skills-presentation">
-                    <Gallery />
+                    Future Cool Component
                 </div>
             </div>
         </section>

@@ -1,6 +1,8 @@
-import { Header } from '../../components/Header';
-import { PersonalInfo } from '../../components/PersonalInfo';
-import { Presentation } from '../../components/Presentation';
+import { Separator } from '../../components/Separator';
+import { Header } from '../Sections/Header';
+import { PersonalInfo } from '../Sections/PersonalInfo';
+import { PersonalProjects } from '../Sections/PersonalProjects';
+import { Presentation } from '../Sections/Presentation';
 import './styles.scss';
 
 export function HomePage() {
@@ -10,6 +12,8 @@ export function HomePage() {
                 <Header />
                 <PersonalInfo />
                 <Presentation />
+                <Separator />
+                <PersonalProjects />
             </div>
         </main>
     )

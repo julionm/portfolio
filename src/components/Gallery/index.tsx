@@ -1,20 +1,24 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import './styles.scss';
 
-export function Gallery() {
+interface GalleryProps<T> {
+    renderItem: (item: T) => JSX.Element,
+    dataset: T[],
+    interval: number,
+    height: number,
+    width: number,
+}
 
-    const [imgArray,] = useState([
-        "https://plus.unsplash.com/premium_photo-1666184129932-e443a8de06e9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
-        "https://images.unsplash.com/photo-1682686581312-506a8b53190e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
-        "https://images.unsplash.com/photo-1661956600684-97d3a4320e45?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
-        "https://images.unsplash.com/photo-1683223584862-91b693b6db27?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1432&q=80",
-        "https://images.unsplash.com/photo-1683223585212-6e3cf4cf9473?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=983&q=80",
-        "https://plus.unsplash.com/premium_photo-1672907031501-b573f4d16056?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
-        "https://images.unsplash.com/photo-1683009427619-a1a11b799e05?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
-    ]);
+export function Gallery<T>({
+    renderItem,
+    dataset,
+    interval = 4000,
+    height = 225,
+    width = 300
+} : GalleryProps<T>) {
 
     const gallery = useRef<HTMLDivElement>(null);
-    const currentImg = useRef(0);
+    const currentItem = useRef(0);
     const intervalId = useRef<number>(0);
     const circularButtons = useRef<HTMLButtonElement[]>([]);
 
@@ -22,7 +26,7 @@ export function Gallery() {
         if (intervalId.current) {
             clearInterval(intervalId.current);
         }
-        intervalId.current = setInterval(handleNextImage, 4000);
+        intervalId.current = setInterval(handleNextItem, interval);
 
         return () => {
             clearInterval(intervalId.current);
@@ -31,26 +35,26 @@ export function Gallery() {
 
     const resetInterval = () => {
         clearInterval(intervalId.current);
-        intervalId.current = setInterval(handleNextImage, 4000);
+        intervalId.current = setInterval(handleNextItem, interval);
     }
 
-    const handleNextImage = () => handleImageChange(currentImg.current + 1);
-    const handlePreviousImage = () => handleImageChange(currentImg.current - 1);
+    const handleNextItem = () => handleItemChange(currentItem.current + 1);
+    const handlePreviousItem = () => handleItemChange(currentItem.current - 1);
 
-    const handleImageChange = (nextImg: number) => {
-        if (nextImg < 0) { 
+    const handleItemChange = (nextItem: number) => {
+        if (nextItem < 0) { 
             // if it goes back when the first image is selected, go to the last image
-            nextImg = imgArray.length - 1;
+            nextItem = dataset.length - 1;
         }
 
-        if (nextImg >= imgArray.length) {
+        if (nextItem >= dataset.length) {
             // if it goes next when the last image is selected, go to the first image
-            nextImg = 0;
+            nextItem = 0;
         }
 
         if (!gallery.current) return;
 
-        gallery.current.style.setProperty('--scrollQtd', `-${nextImg * 100}%`);
+        gallery.current.style.setProperty('--scrollQtd', `-${nextItem * 100}%`);
 
         const previousActiveButton = circularButtons.current.find(
             (button) => button.ariaCurrent === "true"
@@ -60,18 +64,18 @@ export function Gallery() {
             previousActiveButton.ariaCurrent = "false";
         }
 
-        circularButtons.current[nextImg].ariaCurrent = "true";
+        circularButtons.current[nextItem].ariaCurrent = "true";
 
-        currentImg.current = nextImg;
+        currentItem.current = nextItem;
     }
 
-    const backImage = () => {
-        handlePreviousImage();
+    const backItem = () => {
+        handlePreviousItem();
         resetInterval();
     };
 
-    const nextImage = () => {
-        handleNextImage();
+    const nextItem = () => {
+        handleNextItem();
         resetInterval();
     };
 
@@ -83,26 +87,38 @@ export function Gallery() {
             <div
                 ref={gallery}
                 id="imagesWrapper"
+                style={{
+                    height: `${height}px`,
+                    width: `${width}px`
+                }}
                 className="wrapper"
             >
-                <div className="images-list">
-                    {
-                        imgArray.map(img => (
-                            <img key={img} src={img} className="images" />
+                <div className="items-list">
+                    { 
+                        dataset.map((item) => (
+                            <div
+                                style={{
+                                    height: `${height}px`,
+                                    width: `${width}px`
+                                }}
+                                className='item'
+                            >
+                                {renderItem(item)}
+                            </div>
                         ))
                     }
                 </div>
             </div>
             
             <div className="controllers">
-                <button id="backButton" onClick={backImage}>Back</button>
+                <button id="backButton" onClick={backItem}>Back</button>
                 <div className="active-buttons">
                     {
-                        imgArray.map((img, index) => {
+                        dataset.map((value, index) => {
                             if (index === 0) {
                                 const firstButtonElement = 
                                     <button
-                                        key={img}
+                                        key={JSON.stringify(value)}
                                         ref={(btnRef) => {
                                             if (!btnRef) return;
                                             circularButtons.current[index] = btnRef;
@@ -117,7 +133,7 @@ export function Gallery() {
 
                             return (
                                 <button
-                                    key={img}
+                                    key={JSON.stringify(value)}
                                     ref={(btnRef) => {
                                         if (!btnRef) return;
     
@@ -130,7 +146,7 @@ export function Gallery() {
                         })
                     }
                 </div>
-                <button id="nextButton" onClick={nextImage}>Next</button>
+                <button id="nextButton" onClick={nextItem}>Next</button>
             </div>
         </div>
     );
