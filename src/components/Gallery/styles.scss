@@ -1,0 +1,65 @@
+* {
+    --selected-color: #2d65fa;
+    --disabled-color: #95979c;
+}
+
+.gallery {
+    background-color: transparent;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.wrapper {
+    --scrollQtd: 0;
+
+    height: 225px;
+    width: 300px;
+    overflow-x: hidden;
+}
+
+.images-list {
+    display: flex;
+    flex-direction: row;
+    transform: translate(var(--scrollQtd), 0);
+    transition: transform 0.35s cubic-bezier(0.15, 0.3, 0.25, 1) 0s;
+}
+
+.images {
+    height: 225px;
+    width: 300px;
+    flex-shrink: 0;
+}
+
+.controllers {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+    button#backButton, button#nextButton {
+        outline: none;
+        border: none;
+        padding: 10px 15px;
+        color: white;
+        background-color: var(--selected-color);
+        border-radius: 5px;
+    }
+}
+
+.circular {
+    height: 12px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+
+    background-color: var(--disabled-color);
+}
+
+button[aria-current="true"] {
+    background-color: var(--selected-color);
+}

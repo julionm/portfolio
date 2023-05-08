@@ -1,0 +1,44 @@
+.header-container {
+    height: 100px;
+
+    font-family: 'Roboto Mono Bold';
+  
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    
+    position: relative;
+    
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      width: 80%;
+      height: 1px;
+      background-color: var(--separator-color);
+    }
+
+    // decide if this will be sticky or not
+    //position: sticky;
+    //top: 0;
+    z-index: 100;
+    background-color: var(--main-bg-color);
+}
+
+.section-links {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.section-links > a {
+    text-decoration: none;
+    color: var(--font-color);
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+
+    &:hover {
+        // add an hover effect to the links
+    }
+}
