@@ -1,0 +1,35 @@
+@use 'src/global/title';
+@use 'src/global/highlight';
+
+.presentation {
+  position: relative;
+  height: 300px;
+  padding: 30px;
+  
+  font-family: 'Nunito Sans Regular';
+
+  h2 {
+      color: var(--font-color);
+      font-family: 'Roboto Mono Bold';
+  }
+
+  .presentation-container {
+    display: flex;
+    
+    article {
+      flex: 0.8;
+
+      p:first-of-type {
+        margin-top: 10px;
+      }
+
+      p {
+        line-height: 1.4;
+      }
+    }
+
+    .skills-presentation {
+      flex: 1;
+    }
+  }
+}

@@ -1,0 +1,8 @@
+.highlight {
+    transition: all .4s ease-in-out;
+
+    &:hover {
+        background-color: black;
+        color: white;
+    }
+}

@@ -1,0 +1,20 @@
+main {
+  display: flex;
+  justify-content: center;
+  background-color: var(--main-bg-color);
+  
+  overflow-y: scroll;
+  max-height: 100vh;
+}
+  
+@media(prefers-reduced-motion: no-preference) {
+  main {
+    scroll-behavior: smooth;
+  }
+}
+  
+.container {
+  width: min(900px, 100%);
+  background-color: var(--main-bg-color);
+  height: fit-content;
+}
